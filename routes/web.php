@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PageController;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Socialite;
 
 Route::get('/', [PageController::class, 'homepage'])->name('homepage');
 
@@ -16,3 +20,25 @@ Route::delete('/articoli/{article}/elimina', [ArticleController::class, 'destroy
 
 
 //Route::resource('article', ArticleController::class);
+
+Route::get('/auth/redirect/{provider}', function ($provider) {
+    return Socialite::driver($provider)->redirect();
+});
+
+Route::get('/auth/callback', function () {
+    $githubUser = Socialite::driver('github')->user();
+    dd($githubUser);
+    $user = User::updateOrCreate([
+        'github_id' => $githubUser->id,
+    ], [
+        'name' => $githubUser->name,
+        'password' => Hash::make($githubUser->name),
+        'email' => $githubUser->email,
+        'facebook_token' => $githubUser->token,
+        'google_refresh_token' => $githubUser->refreshToken,
+    ]);
+
+    Auth::login($user);
+
+    return redirect()->route('homepage');
+});

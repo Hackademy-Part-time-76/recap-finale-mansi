@@ -29,5 +29,7 @@
 
             <button type="submit" class="btn btn-primary">Entra</button>
         </form>
+
+        <a href="/auth/redirect">Entra con Github</a>
     </div>
 </x-layout>
