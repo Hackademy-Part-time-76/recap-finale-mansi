@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ArticleStoreRequest;
 use App\Models\Article;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('articles.create');
+        $tags = Tag::all();
+        return view('articles.create', compact('tags'));
     }
 
     /**
@@ -43,6 +45,8 @@ class ArticleController extends Controller
             'image' => $image,
             'user_id' => Auth::user()->id
         ]);
+
+        $article->tags()->attach($request->tags);
 
         return redirect()->route('articles.index')->with('success', 'Articolo inserito con successo!');
     }
@@ -78,6 +82,13 @@ class ArticleController extends Controller
             'image' => $image,
         ]);
 
+
+        // $article->tags()->deatach();
+        // $article->tags()->attach($request->tags);
+
+        $article->tags()->sync($request->tags);
+
+
         return redirect()->route('articles.index')->with('success', 'Articolo modificato con successo!');
     }
 
@@ -86,6 +97,7 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+        $article->tags()->deatach();
         $article->delete();
         return redirect()->route('articles.index')->with('success', 'Articolo eliminato con successo!');
     }

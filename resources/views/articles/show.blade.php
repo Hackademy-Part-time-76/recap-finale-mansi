@@ -1,4 +1,4 @@
 <x-layout>
     Titolo: {{ $article->title }}
-    Autore: {{ $article->user->email }}
+    Autore: {{ $article->user->name }}
 </x-layout>

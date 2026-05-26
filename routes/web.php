@@ -13,3 +13,6 @@ Route::get('/articoli/{article}/mostra', [ArticleController::class, 'show'])->na
 Route::get('/articoli/{article}/modifica', [ArticleController::class, 'edit'])->name('articles.edit')->middleware('auth');
 Route::put('/articoli/{article}/aggiorna', [ArticleController::class, 'update'])->name('articles.update')->middleware('auth');
 Route::delete('/articoli/{article}/elimina', [ArticleController::class, 'destroy'])->name('articles.destroy')->middleware('auth');
+
+
+//Route::resource('article', ArticleController::class);

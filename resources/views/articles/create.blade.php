@@ -24,6 +24,17 @@
                 @enderror
             </div>
             <div class="mb-3">
+                @foreach ($tags as $tag)
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{ $tag->id }}" name="tags[]"
+                            id="checkDefault-{{ $tag->id }}">
+                        <label class="form-check-label" for="checkDefault-{{ $tag->id }}">
+                            {{ $tag->name }}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+            <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Corpo Articolo</label>
 
                 <textarea class="form-control" name="body" id="" cols="30" rows="10">{{ old('body') }}</textarea>
